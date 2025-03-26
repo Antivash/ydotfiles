@@ -77,10 +77,11 @@ local local_config = load_local_config("local")
 --- Config
 ---------------------------------------------------------------
 local config = {
+  window_decorations = "TITLE|RESIZE",
 	-- font = wezterm.font("Cica"),
 	-- font_size = 10.0,
-	font = wezterm.font("UDEV Gothic 35NFLG"),
-	font_size = 8.5,
+	font = wezterm.font("CaskaydiaCove Nerd Font"),
+	font_size = 13,
 	-- cell_width = 1.1,
 	-- line_height = 1.1,
 	-- font_rules = {
@@ -94,9 +95,9 @@ local config = {
 	-- 		font = wezterm.font("Cica", { weight = "Bold", italic = true }),
 	-- 	},
 	-- },
-	check_for_updates = false,
-	use_ime = true,
-	ime_preedit_rendering = "Builtin",
+	check_for_updates = true,
+	use_ime = false,
+	ime_preedit_rendering = "System",
 	use_dead_keys = false,
 	warn_about_missing_glyphs = false,
 	-- enable_kitty_graphics = false,
@@ -106,15 +107,16 @@ local config = {
 	cursor_blink_rate = 0,
 	-- https://github.com/wez/wezterm/issues/4972
 	-- enable_wayland = enable_wayland(),
-	enable_wayland = true,
+	enable_wayland = false,
 	-- https://github.com/wez/wezterm/issues/1772
 	-- https://github.com/wez/wezterm/issues/5103
 	-- enable_wayland = false,
-	color_scheme = "nordfox",
+	color_scheme = "Mashup Colors (terminal.sexy)",
 	color_scheme_dirs = { os.getenv("HOME") .. "/.config/wezterm/colors/" },
-	hide_tab_bar_if_only_one_tab = false,
+	hide_tab_bar_if_only_one_tab = true,
 	adjust_window_size_when_changing_font_size = false,
 	selection_word_boundary = " \t\n{}[]()\"'`,;:│=&!%",
+  
 	window_padding = {
 		left = 0,
 		right = 0,
@@ -134,8 +136,8 @@ local config = {
 		},
 	},
 	exit_behavior = "CloseOnCleanExit",
-	tab_bar_at_bottom = false,
-	window_close_confirmation = "AlwaysPrompt",
+	tab_bar_at_bottom = true,
+	window_close_confirmation = "NeverPrompt",
 	-- window_background_opacity = 0.8,
 	disable_default_key_bindings = true,
 	-- visual_bell = {
@@ -152,8 +154,7 @@ local config = {
 	mouse_bindings = keybinds.mouse_bindings,
 	-- https://github.com/wez/wezterm/issues/2756
 	webgpu_preferred_adapter = gpus[1],
-	prefer_egl = true,
-	front_end = "WebGpu",
+	front_end = "OpenGL",
 }
 
 -- https://github.com/wez/wezterm/commit/1e552d764349522dabffeb240feb5b2728eff3d8
@@ -164,7 +165,25 @@ local config = {
 -- 		break
 -- 	end
 -- end
-
+config.background = {
+  -- This is the deepest/back-most layer. It will be rendered first
+  {
+    source = {
+      File = '/home/antivash/.config/wezterm/gallery/orange.jpg',
+    },
+    -- The texture tiles vertically but not horizontally.
+    -- When we repeat it, mirror it so that it appears "more seamless".
+    -- An alternative to this is to set `width = "100%"` and have
+    -- it stretch across the display
+    repeat_x = 'Mirror',
+    hsb = dimmer,
+    opacity = 0.9
+    -- When the viewport scrolls, move this layer 10% of the number of
+    -- pixels moved by the main viewport. This makes it appear to be
+    -- further behind the text.
+     -- attachment = { Parallax = 0.5 },
+  },
+}
 config.hyperlink_rules = {
 	-- Matches: a URL in parens: (URL)
 	{

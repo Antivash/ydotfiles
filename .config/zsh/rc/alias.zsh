@@ -20,18 +20,23 @@ alias truecolor-terminal='export COLORTERM=truecolor'
 alias osc52='printf "\x1b]52;;%s\x1b\\" "$(base64 <<< "$(date +"%Y/%m/%d %H:%M:%S"): hello")"'
 alias makej='make -j$(nproc)'
 alias arch='uname -m'
+alias reload="source ~/.zshrc"
+alias zka="zellij kill-all-sessions"
+alias q="exit"
+#alias conda="/home/anaconda/bin/conda"
 
 # history
 alias history-mem='fc -rl'
 alias history-import='fc -RI'
 
 # ls
-alias la='ls -aF --color=auto'
-alias lla='ls -alF --color=auto'
-alias lal='ls -alF --color=auto'
-alias ls='ls --color=auto'
-alias ll='ls -l --color=auto'
-alias l.='ls -d .[a-zA-Z]* --color=auto'
+alias dir='eza -la --icons=always --group-directories-first'
+alias la='eza -la --icons=always --group-directories-first'
+alias lla='eza -laF --icons=always --group-directories-first'
+alias lal='eza -alF --icons=always --group-directories-first'
+alias ls='eza -la --icons=always --group-directories-first'
+alias ll='eza -la --icons=always --group-directories-first'
+alias l.='eza -laf --icons=always --group-directories-first'
 
 # chmod
 alias 644='chmod 644'
@@ -57,10 +62,12 @@ alias gd='dirs -v; echo -n "select number: "; read newdir; cd +"$newdir"' # AUTO
 # man
 alias man-ascii-color-code="man 4 console_codes"
 
-# tmux
-alias t='\tmux -2'
-alias tmux='\tmux -2'
-alias ta='\tmux -2 attach -d'
+# git
+alias commit='git commit -m "updating data"'
+alias track='git add . && git commit -m "Updating Runs"'
+alias push="git push"
+alias pull="git pull"
+#alias clone="git clone"
 
 # xauth
 alias xauth-copy="xauth list | tail -n 1 | awk '{printf \$3}' | pbcopy"
@@ -125,35 +132,8 @@ alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 ##          App                                               ##
 #==============================================================#
 
-# urxvt
-alias Xresources-reload="xrdb -remove && xrdb -DHOME_ENV=\"$HOME\" -merge ~/.config/X11/Xresources"
-
-# web-server
-alias web-server='python -m SimpleHTTPServer 8000'
-
-# generate password
-alias generate-passowrd='openssl rand -base64 20'
-
-# hdd mount
-alias mount-myself='sudo mount -o uid=$(id -u),gid=$(id -g)'
-
-# xhost
-alias xhost-local='xhost local:'
-
-# move bottom
-alias move-bottom='tput cup $(($(stty size|cut -d " " -f 1))) 0 && tput ed'
-
-# luajit patch https://github.com/LuaJIT/LuaJIT/issues/369
-alias luajit="rlwrap luajit"
-
-# translate
-alias transj='trans ja:'
-alias tj='trans ja:'
-alias te='trans :ja'
-
-if builtin command -v nerdctl > /dev/null 2>&1; then
-	alias docker='nerdctl'
-fi
+alias extras="python server.py --enable-modules=chromadb,summarize,classify,sd"
+alias index="sudo podman -i exec photorism photoprism index"
 
 #==============================================================#
 ##          improvement command                               ##
@@ -221,3 +201,9 @@ hash -d zshdata=$XDG_DATA_HOME/zsh
 hash -d zshplugins=$XDG_DATA_HOME/zsh/zinit/plugins
 hash -d nvimdata=$XDG_DATA_HOME/nvim
 hash -d nvimplugins=$XDG_DATA_HOME/nvim/lazy
+
+#==============================================================#
+##          	WSL                                           ##
+#==============================================================#
+alias win='cmd.exe /k "C:/tools/Cmder/vendor/init.bat"'
+alias powershell="pwsh.exe"

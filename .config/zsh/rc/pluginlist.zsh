@@ -72,10 +72,10 @@ zinit wait'0a' lucid \
 	atload"source $ZHOMEDIR/rc/pluginconfig/fast-syntax-highlighting.zsh" \
 	light-mode for @zdharma-continuum/fast-syntax-highlighting
 
-PROMPT="%~"$'\n'"> "
-zinit wait'!0b' lucid depth=1 \
-	atload"source $ZHOMEDIR/rc/pluginconfig/powerlevel10k_atload.zsh" \
-	light-mode for @romkatv/powerlevel10k
+#PROMPT="%~"$'\n'"> "
+#zinit wait'!0b' lucid depth=1 \
+#	atload"source $ZHOMEDIR/rc/pluginconfig/p10k.zsh" \
+#	light-mode for @romkatv/powerlevel10k
 
 
 #--------------------------------#
@@ -134,7 +134,6 @@ zinit wait'1' lucid \
 	light-mode for @ajeetdsouza/zoxide
 
 zinit wait'1' lucid \
-	atload"source $ZHOMEDIR/rc/pluginconfig/cd-gitroot_atload.zsh" \
 	light-mode for @mollifier/cd-gitroot
 
 zinit wait'1' lucid \
@@ -160,11 +159,16 @@ zinit wait'2' lucid \
 #--------------------------------#
 zinit wait'1a' lucid \
  	from"gh-r" as"program" \
-	atclone'fzf --zsh > shell-integration.zsh' \
-	atpull'%atclone' \
-	src"shell-integration.zsh" \
-	atload"source $ZHOMEDIR/rc/pluginconfig/fzf_atload.zsh" \
+ 	atload"source $ZHOMEDIR/rc/pluginconfig/fzf_atload.zsh" \
  	for @junegunn/fzf
+if [ "$ZSHRC_BENCH" != "true" ]; then
+zinit ice wait'0c' lucid
+zinit snippet https://github.com/junegunn/fzf/blob/master/shell/key-bindings.zsh
+zinit ice wait'1a' lucid atload"source $ZHOMEDIR/rc/pluginconfig/fzf_completion.zsh_atload.zsh"
+zinit snippet https://github.com/junegunn/fzf/blob/master/shell/completion.zsh
+zinit ice wait'0a' lucid as"program"
+zinit snippet https://github.com/junegunn/fzf/blob/master/bin/fzf-tmux
+fi
 
 zinit wait'1' lucid \
 	pick"fzf-extras.zsh" \
@@ -198,15 +202,15 @@ zinit wait'2' lucid \
 	#   atload"source $ZHOMEDIR/rc/pluginconfig/pmy_atload.zsh" \
 	#   for @relastle/pmy
 
-if [ "$ZSHRC_BENCH" != "true" ]; then
-	zinit wait'2' lucid silent blockf depth"1" \
-		atclone'deno cache --no-check ./src/cli.ts' \
-		atpull'%atclone' \
-		atinit"source $ZHOMEDIR/rc/pluginconfig/zeno_atinit.zsh" \
-		atload"source $ZHOMEDIR/rc/pluginconfig/zeno_atload.zsh" \
-		for @yuki-yano/zeno.zsh
-fi
-
+# if [ "$ZSHRC_BENCH" != "true" ]; then
+# 	zinit wait'2' lucid silent blockf depth"1" \
+# 		atclone'deno cache --no-check ./src/cli.ts' \
+# 		atpull'%atclone' \
+# 		atinit"source $ZHOMEDIR/rc/pluginconfig/zeno_atinit.zsh" \
+# 		atload"source $ZHOMEDIR/rc/pluginconfig/zeno_atload.zsh" \
+# 		for @yuki-yano/zeno.zsh
+# fi
+# 
 
 #--------------------------------#
 # extension
@@ -217,11 +221,11 @@ zinit wait'1' lucid \
 
 # zinit wait'0' lucid \
 	#   light-mode for @t413/zsh-background-notify
-if [[ -z "$SSH_CONNECTION" ]]; then
-	zinit wait'0' lucid \
-		atload"source $ZHOMEDIR/rc/pluginconfig/zsh-auto-notify_atload.zsh" \
-		light-mode for @MichaelAquilina/zsh-auto-notify
-fi
+#if [[ -z "$SSH_CONNECTION" ]]; then
+#	zinit wait'0' lucid \
+#		atload"source $ZHOMEDIR/rc/pluginconfig/zsh-auto-notify_atload.zsh" \
+#		light-mode for @MichaelAquilina/zsh-auto-notify
+#fi
 
 zinit wait'0' lucid \
 	light-mode for @mafredri/zsh-async
@@ -247,10 +251,6 @@ zinit wait'1' lucid \
 	from"gh-r" as"program" pick"eza" \
 	atload"source $ZHOMEDIR/rc/pluginconfig/eza_atload.zsh" \
 	light-mode for @eza-community/eza
-if [ "$ZSHRC_BENCH" != "true" ]; then
-	zinit ice wait'1' lucid as"completion" nocompile
-	zinit snippet https://github.com/eza-community/eza/blob/main/completions/zsh/_eza
-fi
 
 zinit wait'1' lucid blockf nocompletions \
 	from"gh-r" as'program' pick'ripgrep*/rg' \
@@ -275,13 +275,13 @@ zinit wait'1' lucid \
 	atload"alias rm='trash put'" \
 	light-mode for @oberblastmeister/trashy
 
-zinit wait'1' lucid \
-	from"gh-r" as"program" mv'tealdeer* -> tldr' \
-	light-mode for @tealdeer-rs/tealdeer
-if [ "$ZSHRC_BENCH" != "true" ]; then
-	zinit ice wait'1' lucid as"completion" mv'zsh_tealdeer -> _tldr'
-	zinit snippet https://github.com/dbrgn/tealdeer/blob/main/completion/zsh_tealdeer
-fi
+#zinit wait'1' lucid \
+#	from"gh-r" as"program" mv'tealdeer* -> tldr' \
+#	light-mode for @tealdeer-rs/tealdeer
+#if [ "$ZSHRC_BENCH" != "true" ]; then
+#	zinit ice wait'1' lucid as"completion" mv'zsh_tealdeer -> _tldr'
+#	zinit snippet https://github.com/dbrgn/tealdeer/blob/main/completion/zsh_tealdeer
+#fi
 
 zinit wait'1' lucid \
 	from"gh-r" as"program" bpick'*linux*' \
@@ -354,13 +354,12 @@ zinit wait'0' lucid nocompletions \
 # wezterm
 # test $(openssl version | awk '{print $2}' | awk -F '.' '{print $1}') -eq 1
 # -> bpick"*20.04.tar.xz"
-zinit wait'2' lucid nocompletions \
-	from"gh-r" ver"nightly" as"program" bpick"*24.04.tar.xz" \
-	pick'wezterm/usr/bin/*' \
-	atclone'ln -snf ${PWD}/wezterm/usr/bin/wezterm ~/.local/bin/x-terminal-emulator; echo "" > ._zinit/is_release' \
-	atpull'%atclone' \
-	run-atpull \
-	light-mode for @wezterm/wezterm
+#zinit wait'2' lucid nocompletions \
+#	from"gh-r" ver"nightly"  as"program" bpick"*22.04.tar.xz" \
+#	atclone"command cp -rf wezterm/usr/* $ZPFX; ln -snf $ZPFX/bin/wezterm ~/.local/bin/x-terminal-emulator; echo "" > ._zinit/is_release" \
+#	atpull'%atclone' \
+#	run-atpull \
+#	light-mode for @wez/wezterm
 
 # node (for coc.nvim)
 # zinit wait'0' lucid id-as=node as='readurl|command' \
@@ -450,7 +449,7 @@ zinit wait'1' lucid \
 	# 	for @mislav/hub
 
 # snippet
-[[ $- == *i* ]] && stty -ixon
+[[ $- == *i* ]] && stty -ixon <$TTY >$TTY
 zinit wait'1' lucid blockf nocompletions \
 	from"gh-r" as"program" pick"pet" bpick'*linux_amd64.tar.gz' \
 	atclone'chown -R $(id -nu):$(id -ng) .; zinit creinstall -q knqyf263/pet' \
@@ -502,8 +501,8 @@ fi
 #==============================================================#
 # local plugins
 #==============================================================#
-[ -f "$HOME/.zshrc.plugin.local" ] && source "$HOME/.zshrc.plugin.local"
-
+#[ -f "$HOME/.zshrc.plugin.local" ] && source "$HOME/.zshrc.plugin.local"
+#zinit light masonc15/wsl-notify-zsh
 
 #==============================================================#
 # old plugins

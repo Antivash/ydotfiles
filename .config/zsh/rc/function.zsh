@@ -607,14 +607,14 @@ require("lazy").setup({
 	{ "neovim/nvim-lspconfig" },
 	{
 		"williamboman/mason.nvim",
-		event = "BufEnter",
+		event = "BufReadPre",
 		config = function()
 			require("mason").setup()
 		end,
 	},
 	{
 		"williamboman/mason-lspconfig.nvim",
-		event = "BufEnter",
+		event = "BufReadPre",
 		config = function()
 			require("mason-lspconfig").setup()
 			local lspconfig = require("lspconfig")
