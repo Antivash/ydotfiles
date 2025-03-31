@@ -103,7 +103,7 @@ fi
 #--------------------------------------------------------------#
 ##          Conda question mark?                              ##
 #--------------------------------------------------------------#
-source ~/.bashrc
+#source ~/.bashrc
 
 #--------------------------------------------------------------#
 ##          NVM                                               ##
@@ -116,3 +116,20 @@ export NVM_DIR="$HOME/.config/nvm"
 ##          DirEnv                                            ##
 #--------------------------------------------------------------#
 eval "$(direnv hook zsh)"
+
+[[ -r ${TTY:-} && -w ${TTY:-} && $+commands[stty] == 1 ]] && stty -ixon <$TTY >$TTY
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/antivash/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/antivash/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/antivash/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/antivash/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

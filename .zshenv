@@ -113,3 +113,4 @@ fullscale=,cyan
 helpline=white,black
 roottext=lightgrey,black
 '
+. "$HOME/.cargo/env"
