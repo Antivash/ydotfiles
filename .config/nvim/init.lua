@@ -1,33 +1,19 @@
-require("rc/base")
+-- This file simply bootstraps the installation of Lazy.nvim and then calls other files for execution
+-- This file doesn't necessarily need to be touched, BE CAUTIOUS editing this file and proceed at your own risk.
+local lazypath = vim.env.LAZY or vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+if not (vim.env.LAZY or (vim.uv or vim.loop).fs_stat(lazypath)) then
+  -- stylua: ignore
+  vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath })
+end
+vim.opt.rtp:prepend(lazypath)
 
--- ===============================
-local function load_my_plugins(path)
-	for file, _ in vim.fs.dir(path) do
-		require("rc/myplugins/" .. vim.fs.basename(path) .. "/" .. file:gsub("%.lua$", ""))
-	end
+-- validate that lazy is available
+if not pcall(require, "lazy") then
+  -- stylua: ignore
+  vim.api.nvim_echo({ { ("Unable to load lazy from: %s\n"):format(lazypath), "ErrorMsg" }, { "Press any key to exit...", "MoreMsg" } }, true, {})
+  vim.fn.getchar()
+  vim.cmd.quit()
 end
 
--- ===============================
-require("rc/option")
-require("rc/display")
-load_my_plugins(vim.fn.stdpath("config") .. "/lua/rc/myplugins/start")
-require("rc/pluginlist")
-require("rc/mappings")
-if vim.g.vscode then
-	require("rc/vscode-neovim/mappings")
-end
-vim.defer_fn(function()
-	require("rc/command")
-end, 50)
-require("rc/autocmd")
-
--- ===============================
-vim.schedule(function()
-	load_my_plugins(vim.fn.stdpath("config") .. "/lua/rc/myplugins/opt")
-end)
-
--- ===============================
--- Local Configuration
-if vim.fn.filereadable(vim.fs.normalize("~/.nvim_local_init.lua")) ~= 0 then
-	dofile(vim.fs.normalize("~/.nvim_local_init.lua"))
-end
+require "lazy_setup"
+require "polish"
